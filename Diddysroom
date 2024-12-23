@@ -1,0 +1,107 @@
+
+```lua
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ScriptHubGui"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create Main Frame
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0.4, 0, 0.5, 0) -- Bigger size
+mainFrame.Position = UDim2.new(0.3, 0, 0.25, 0) -- Centered vertically
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Darker background
+mainFrame.BorderSizePixel = 0 -- Remove border
+mainFrame.Parent = screenGui
+
+-- Add Rounded Corners
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0.1, 0) -- Rounded corners
+corner.Parent = mainFrame
+
+-- Create Title Label
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, 0, 0.2, 0) -- Title takes up top 20% of frame
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.Text = "Script Hub"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+titleLabel.BackgroundTransparency = 1 -- Transparent background
+titleLabel.TextScaled = true -- Scale text
+titleLabel.Font = Enum.Font.SourceSansBold -- Bold font
+titleLabel.Parent = mainFrame
+
+-- Create Execute Button
+local executeButton = Instance.new("TextButton")
+executeButton.Name = "ExecuteButton"
+executeButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+executeButton.Position = UDim2.new(0.1, 0, 0.3, 0) -- Adjusted position
+executeButton.Text = "The Strongest Battlegrounds Animations by Gojomadewes"
+executeButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255) -- Cool blue color
+executeButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+executeButton.TextScaled = true -- Scale text
+executeButton.Font = Enum.Font.SourceSans -- Regular font
+executeButton.Parent = mainFrame
+
+-- Add Rounded Corners to Button
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.CornerRadius = UDim.new(0.1, 0) -- Rounded corners
+buttonCorner.Parent = executeButton
+
+-- Create Notification Label
+local notificationLabel = Instance.new("TextLabel")
+notificationLabel.Size = UDim2.new(1, 0, 0.1, 0) -- Notification takes up 10% of the frame height
+notificationLabel.Position = UDim2.new(0, 0, 0.75, 0) -- Positioned towards the bottom of the frame
+notificationLabel.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Slightly darker background for notification
+notificationLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+notificationLabel.TextScaled = true -- Scale text
+notificationLabel.Font = Enum.Font.SourceSans -- Regular font
+notificationLabel.Text = "" -- Start with empty text
+notificationLabel.Visible = false -- Initially hidden
+notificationLabel.Parent = mainFrame
+
+-- Button Click Functionality
+executeButton.MouseButton1Click:Connect(function()
+    local success, message = pcall(function()
+        loadstring(game:HttpGet("https://rentry.org/betless-hub-x/raw"))() -- Execute the external script
+    end)
+    
+    if not success then
+        warn("Error executing script: " .. message)
+    else
+        -- Show notification
+        notificationLabel.Text = "Script made by gojomadewes on discord / fluxus Z Beta tester 👨‍💻"
+        notificationLabel.Visible = true
+        
+        -- Hide notification after 5 seconds
+        wait(5)
+        notificationLabel.Visible = false
+    end
+end)
+
+-- Draggable Functionality
+local dragging = false
+local dragStart = nil
+local startPos = nil
+
+mainFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = mainFrame.Position
+    end
+end)
+
+mainFrame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+mainFrame.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+```
+
